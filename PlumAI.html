@@ -1,0 +1,995 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PlumAI - The Inventory-Powered Revolution</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #C2857B;
+            --secondary: #D4A59A;
+            --accent: #A86F63;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --gradient: linear-gradient(135deg, #C2857B 0%, #A86F63 100%);
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+
+        .nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 5%;
+            box-shadow: 0 2px 10px rgba(194, 133, 123, 0.1);
+        }
+
+        .nav-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 2rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            transition: color 0.3s;
+            font-weight: 500;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+
+        .hero {
+            height: 100vh;
+            background: linear-gradient(135deg, #C2857B 0%, #A86F63 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            text-align: center;
+            color: white;
+            z-index: 2;
+            padding: 2rem;
+            max-width: 1200px;
+        }
+
+        .hero h1 {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .hero h2 {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+            animation: fadeInUp 1s ease 0.2s both;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 1.2rem 3rem;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            animation: fadeInUp 1s ease 0.4s both;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        .neural-bg {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+        }
+
+        section {
+            padding: 6rem 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 3rem;
+            text-align: center;
+            margin-bottom: 3rem;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .problem-section {
+            background: var(--light);
+        }
+
+        .problem-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .problem-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(194, 133, 123, 0.08);
+            transition: transform 0.3s;
+            border: 1px solid rgba(194, 133, 123, 0.1);
+        }
+
+        .problem-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(194, 133, 123, 0.12);
+        }
+
+        .problem-card h3 {
+            color: var(--primary);
+            font-size: 1.6rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .problem-card li {
+            padding: 0.8rem 0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .problem-card li:last-child {
+            border-bottom: none;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 4rem;
+            font-weight: bold;
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1.2rem;
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .solution-section {
+            background: var(--dark);
+            color: white;
+        }
+
+        .solution-flow {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 3rem;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+
+        .flow-item {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 2rem;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .flow-item:hover {
+            background: rgba(255,255,255,0.1);
+            transform: scale(1.05);
+        }
+
+        .flow-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .arrow {
+            font-size: 2rem;
+            color: var(--primary);
+        }
+
+        .pillars-section {
+            background: var(--light);
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .pillar-card {
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(194, 133, 123, 0.08);
+            text-align: center;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(194, 133, 123, 0.1);
+        }
+
+        .pillar-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: var(--gradient);
+        }
+
+        .pillar-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(194, 133, 123, 0.15);
+        }
+
+        .pillar-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pillar-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .advantage-section {
+            background: white;
+        }
+
+        .comparison-table {
+            width: 100%;
+            margin-top: 3rem;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 4px 20px rgba(194, 133, 123, 0.08);
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid rgba(194, 133, 123, 0.1);
+        }
+
+        .comparison-table th {
+            background: var(--gradient);
+            color: white;
+            padding: 1.5rem;
+            text-align: left;
+            font-size: 1.2rem;
+        }
+
+        .comparison-table td {
+            padding: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .comparison-table tr:hover {
+            background: #f1f5f9;
+        }
+
+        .checkmark {
+            color: #10b981;
+            font-size: 1.5rem;
+        }
+
+        .crossmark {
+            color: #ef4444;
+            font-size: 1.5rem;
+        }
+
+        .tech-section {
+            background: var(--dark);
+            color: white;
+        }
+
+        .tech-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .tech-item {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
+            border-radius: 15px;
+            border: 2px solid rgba(255,255,255,0.1);
+            transition: all 0.3s;
+        }
+
+        .tech-item:hover {
+            background: rgba(255,255,255,0.08);
+            border-color: var(--primary);
+        }
+
+        .team-section {
+            background: white;
+        }
+
+        .founders-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+            max-width: 1000px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .founder-card {
+            background: linear-gradient(to bottom, #f8fafc 0%, white 100%);
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
+            box-shadow: 0 4px 20px rgba(194, 133, 123, 0.1);
+            text-align: center;
+            transition: all 0.4s ease;
+            position: relative;
+            border: 1px solid rgba(194, 133, 123, 0.1);
+        }
+
+        .founder-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 40px rgba(194, 133, 123, 0.15);
+            border-color: var(--primary);
+        }
+
+        .founder-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #C2857B 0%, #A86F63 100%);
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.5rem;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(194, 133, 123, 0.2);
+        }
+
+        .founder-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .founder-title {
+            color: var(--primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .founder-education {
+            color: #64748b;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .founder-description {
+            color: #475569;
+            line-height: 1.7;
+            font-size: 1rem;
+        }
+
+        .founder-icon {
+            font-size: 3rem;
+            margin-top: 1.5rem;
+            opacity: 0.2;
+            position: absolute;
+            bottom: 1rem;
+            right: 1.5rem;
+        }
+
+        .tech-item h4 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .roadmap-section {
+            background: var(--light);
+        }
+
+        .timeline {
+            position: relative;
+            padding: 2rem 0;
+            margin-top: 3rem;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background: var(--gradient);
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .timeline-item:nth-child(odd) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: white;
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 30px;
+            background: var(--gradient);
+            border-radius: 50%;
+            border: 5px solid var(--light);
+        }
+
+        .roi-section {
+            background: white;
+        }
+
+        .roi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .roi-card {
+            text-align: center;
+            padding: 3rem 2rem;
+            background: linear-gradient(135deg, #C2857B 0%, #A86F63 100%);
+            color: white;
+            border-radius: 20px;
+            transition: transform 0.3s;
+        }
+
+        .roi-card:hover {
+            transform: scale(1.05);
+        }
+
+        .roi-number {
+            font-size: 4rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+
+        .cta-section {
+            background: var(--dark);
+            color: white;
+            text-align: center;
+            padding: 8rem 5%;
+        }
+
+        .cta-section h2 {
+            font-size: 3.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .cta-section p {
+            font-size: 1.5rem;
+            margin-bottom: 3rem;
+            opacity: 0.9;
+        }
+
+        .trial-offer {
+            background: rgba(255,255,255,0.1);
+            padding: 3rem;
+            border-radius: 20px;
+            margin: 3rem auto;
+            max-width: 800px;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        .trial-offer h3 {
+            color: var(--primary);
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        footer {
+            background: #000;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+
+            .problem-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .timeline-item {
+                flex-direction: row !important;
+            }
+
+            .timeline-content {
+                width: calc(100% - 60px);
+                margin-left: 60px;
+            }
+
+            .timeline-marker {
+                left: 20px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            section {
+                padding: 4rem 5%;
+            }
+
+            .stats {
+                flex-direction: column;
+            }
+
+            .solution-flow {
+                flex-direction: column;
+            }
+
+            .arrow {
+                transform: rotate(90deg);
+            }
+
+            .comparison-table {
+                font-size: 0.85rem;
+            }
+
+            .comparison-table th,
+            .comparison-table td {
+                padding: 1rem 0.5rem;
+            }
+
+            .founders-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .cta-section h2 {
+                font-size: 2.5rem;
+            }
+
+            .cta-section p {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .hero h2 {
+                font-size: 1.2rem;
+            }
+
+            .logo {
+                font-size: 1.5rem;
+            }
+
+            section {
+                padding: 3rem 5%;
+            }
+
+            .stat-number {
+                font-size: 3rem;
+            }
+
+            .flow-icon {
+                font-size: 2rem;
+            }
+
+            .pillar-icon {
+                font-size: 3rem;
+            }
+
+            .founder-avatar {
+                width: 80px;
+                height: 80px;
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav">
+        <div class="nav-content">
+            <div class="logo">PlumAI</div>
+            <ul class="nav-links">
+                <li><a href="#problem">Problem</a></li>
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#features">Features</a></li>
+                <li><a href="#team">Team</a></li>
+                <li><a href="#tech">Technology</a></li>
+                <li><a href="#roi">ROI</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <canvas class="neural-bg" id="neuralCanvas"></canvas>
+        <div class="hero-content">
+            <h1>The Inventory-Powered Revolution</h1>
+            <h2>AI-Native Branding & Marketing for D2C Pioneers</h2>
+            <p style="font-size: 1.3rem; margin-bottom: 2rem; opacity: 0.95;">Eliminating Dead Stock & Wasted Spend Through Intelligent Automation</p>
+            <a href="#contact" class="cta-button">Start Your Free Trial</a>
+        </div>
+    </section>
+
+    <section id="problem" class="problem-section">
+        <h2 class="section-title">The $100 Billion Problem</h2>
+        <p style="text-align: center; font-size: 1.3rem; max-width: 800px; margin: 0 auto 3rem; color: #64748b;">
+            D2C brands face a critical duality of disaster: massive inventory inefficiencies paired with creative bottlenecks
+        </p>
+        
+        <div class="problem-grid">
+            <div class="problem-card">
+                <h3>💰 The Dead Stock Burden</h3>
+                <ul>
+                    <li><strong>20-30%</strong> of inventory becomes dead stock</li>
+                    <li>Capital tied up in unsold products</li>
+                    <li>Escalating storage and holding fees</li>
+                    <li>Eroding profit margins quarter after quarter</li>
+                    <li>Inability to predict demand accurately</li>
+                </ul>
+            </div>
+            
+            <div class="problem-card">
+                <h3>🎨 The Creative Bottleneck</h3>
+                <ul>
+                    <li>Traditional photoshoots take <strong>weeks</strong></li>
+                    <li>Agencies cost <strong>$10K-50K</strong> per campaign</li>
+                    <li>Marketing teams disconnected from inventory</li>
+                    <li>Missed trends and fleeting opportunities</li>
+                    <li>Inflexible content that can't pivot</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">25%</div>
+                <div class="stat-label">Inventory Holding Costs</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">30%</div>
+                <div class="stat-label">Marketing Overhead</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">$100B</div>
+                <div class="stat-label">Annual Industry Waste</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="solution" class="solution-section">
+        <h2 class="section-title" style="color: white;">The Neural Brand OS</h2>
+        <p style="text-align: center; font-size: 1.3rem; max-width: 900px; margin: 0 auto 3rem; opacity: 0.9;">
+            The first-to-market AI Operating System that connects real-time inventory to your brand's creative and marketing strategy, autonomously
+        </p>
+
+        <div class="solution-flow">
+            <div class="flow-item">
+                <div class="flow-icon">📦</div>
+                <h4>Warehouse Data</h4>
+                <p>Real-time SKU monitoring</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">🧠</div>
+                <h4>AI Analysis</h4>
+                <p>Predictive intelligence</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">📸</div>
+                <h4>Creative Generation</h4>
+                <p>Instant campaigns</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">📱</div>
+                <h4>Distribution</h4>
+                <p>Multi-channel activation</p>
+            </div>
+            <div class="arrow">→</div>
+            <div class="flow-item">
+                <div class="flow-icon">📈</div>
+                <h4>Revenue Growth</h4>
+                <p>Maximized sell-through</p>
+            </div>
+        </div>
+
+        <div style="margin-top: 4rem; text-align: center;">
+            <h3 style="font-size: 2rem; margin-bottom: 2rem;">Three Core Capabilities</h3>
+            <div style="display: flex; gap: 2rem; justify-content: center; flex-wrap: wrap;">
+                <div style="flex: 1; min-width: 200px;">
+                    <h4 style="color: var(--primary); font-size: 1.5rem;">⚡ Predictive</h4>
+                    <p>Anticipates demand and identifies overstock before it happens</p>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <h4 style="color: var(--primary); font-size: 1.5rem;">🎯 Proactive</h4>
+                    <p>Generates hyper-relevant campaigns instantly and automatically</p>
+                </div>
+                <div style="flex: 1; min-width: 200px;">
+                    <h4 style="color: var(--primary); font-size: 1.5rem;">💰 Profitable</h4>
+                    <p>Maximizes sell-through and slashes operational costs</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="features" class="pillars-section">
+        <h2 class="section-title">From Warehouse Floor to Customer Door</h2>
+        <p style="text-align: center; font-size: 1.3rem; max-width: 800px; margin: 0 auto 3rem; color: #64748b;">
+            Full-spectrum brand engineering powered by three revolutionary pillars
+        </p>
+
+        <div class="pillars-grid">
+            <div class="pillar-card">
+                <div class="pillar-icon">🎯</div>
+                <h3>Logistics Intelligence</h3>
+                <p style="margin-bottom: 1.5rem; color: #64748b;">Data-driven inventory optimization</p>
+                <ul style="text-align: left; list-style: none; padding: 0;">
+                    <li>✓ Real-time SKU monitoring across all channels</li>
+                    <li>✓ Advanced demand forecasting algorithms</li>
+                    <li>✓ Dead stock identification and alerts</li>
+                    <li>✓ Predictive analytics for seasonal trends</li>
+                    <li>✓ Automated reorder point calculations</li>
+                </ul>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon">🎨</div>
+                <h3>AI-Native Branding</h3>
+                <p style="margin-bottom: 1.5rem; color: #64748b;">Instant creative generation at scale</p>
+                <ul style="text-align: left; list-style: none; padding: 0;">
+                    <li>✓ Hyper-realistic virtual photoshoots</li>
+                    <li>✓ Brand voice synthesis and consistency</li>
+                    <li>✓ Dynamic asset generation (logos, packaging)</li>
+                    <li>✓ Product visualization in any context</li>
+                    <li>✓ Infinite creative variations</li>
+                </ul>
+            </div>
+
+            <div class="pillar-card">
+                <div class="pillar-icon">🚀</div>
+                <h3>Agentic Marketing</h3>
+                <p style="margin-bottom: 1.5rem; color: #64748b;">Autonomous campaign execution</p>
+                <ul style="text-align: left; list-style: none; padding: 0;">
+                    <li>✓ Real-time trend detection and capture</li>
+                    <li>✓ Multi-channel ad creation and deployment</li>
+                    <li>✓ Dynamic budget allocation optimization</li>
+                    <li>✓ A/B testing at unprecedented scale</li>
+                    <li>✓ Continuous performance calibration</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section id="advantage" class="advantage-section">
+        <h2 class="section-title">The Unfair Advantage</h2>
+        <p style="text-align: center; font-size: 1.3rem; max-width: 800px; margin: 0 auto 3rem; color: #64748b;">
+            Beyond agencies and SaaS tools—our end-to-end autonomous moat
+        </p>
+
+        <table class="comparison-table">
+            <thead>
+                <tr>
+                    <th>Capability</th>
+                    <th>Traditional Agency</th>
+                    <th>Standalone AI Tool</th>
+                    <th style="background: linear-gradient(135deg, #10b981 0%, #059669 100%);">PlumAI</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Time to Market</strong></td>
+                    <td>2-4 weeks</td>
+                    <td>1-2 days</td>
+                    <td><strong>Minutes</strong> ⚡</td>
+                </tr>
+                <tr>
+                    <td><strong>Cost per Campaign</strong></td>
+                    <td>$10,000 - $50,000</td>
+                    <td>$500 - $2,000</td>
+                    <td><strong>$50 - $200</strong> 💰</td>
+                </tr>
+                <tr>
+                    <td><strong>Inventory Integration</strong></td>
+                    <td><span class="crossmark">✗</span></td>
+                    <td><span class="crossmark">✗</span></td>
+                    <td><span class="checkmark">✓</span> Real-time</td>
+                </tr>
+                <tr>
+                    <td><strong>Campaign Volume</strong></td>
+                    <td>1-3 per month</td>
+                    <td>5-10 per month</td>
+                    <td><strong>Unlimited</strong> 🚀</td>
+                </tr>
+                <tr>
+                    <td><strong>Trend Responsiveness</strong></td>
+                    <td>Weeks behind</td>
+                    <td>Days behind</td>
+                    <td><strong>Real-time capture</strong> 🎯</td>
+                </tr>
+                <tr>
+                    <td><strong>Data-Driven Strategy</strong></td>
+                    <td>Manual reporting</td>
+                    <td>Basic analytics</td>
+                    <td><strong>Autonomous optimization</strong> 🧠</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 4rem; text-align: center; max-width: 900px; margin-left: auto; margin-right: auto;">
+            <h3 style="font-size: 2rem; margin-bottom: 2rem; color: var(--primary);">Why We Win</h3>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+                <div>
+                    <h4 style="font-size: 3rem; color: var(--accent);">⚡</h4>
+                    <h5 style="margin-bottom: 0.5rem;">Speed</h5>
+                    <p style="color: #64748b;">Acts in minutes vs weeks, capturing fleeting opportunities</p>
+                </div>
+                <div>
+                    <h4 style="font-size: 3rem; color: var(--accent);">🎯</h4>
+                    <h5 style="margin-bottom: 0.5rem;">Precision</h5>
+                    <p style="color: #64748b;">Strategy driven by real inventory data, not guesswork</p>
+                </div>
+                <div>
+                    <h4 style="font-size: 3rem; color: var(--accent);">💰</h4>
+                    <h5 style="margin-bottom: 0.5rem;">Cost-Efficiency</h5>
+                    <p style="color: #64748b;">Replaces multiple roles at a fraction of the price</p>
+                </div>
+                <div>
+                    <h4 style="font-size: 3rem; color: var(--accent);">📈</h4>
+                    <h5 style="margin-bottom: 0.5rem;">Scale</h5>
+                    <p style="color: #64748b;">Generates hundreds of tailored campaigns simultaneously</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tech" class="tech-section">
+        <h2 class="section-title" style="color: white;">Beyond Prompts: Our Neural Ecosystem</h2>
+        <p style="text-align: center; font-size: 1.3rem; max-width: 900px; margin: 0 auto 3rem; opacity: 0.9;">
+            Leveraging cutting-edge open-source models, meticulously fine-tuned and integrated into our proprietary workflow
+        </p>
+
+        <div class="tech-stack">
+            <div class="tech-item">
+                <h4>🎛️ PlumAI Core</h4>
+                <p><strong>Orchestration Engine</strong></p>
+                <p style="color: #94a3b8; margin-top: 1rem;">Custom n8n workflows that seamlessly connect every component, enabling intelligent decision-making and data flow across the entire system.</p>
+            </div>
+
+            <div class="tech-item">
+                <h4>📸 Visual Injection Tech</h4>
+                <p><strong>Fine-tuned Flux.1 LoRA</strong></p>
+                <p style="color: #94a3b8; margin-top: 1rem;">Advanced product cloning and contextualization. Generate photorealistic product images in any setting, style, or scenario without physical shoots.</p>
+            </div>
+
+            <div class="tech-item">
+                <h4>🗄️ Neural Brand Vault</h4>
+                <p><strong>Supabase + RAG</strong></p>
+                <p style="color: #94a3b8; margin-top: 1rem;">Secure, vector-powered brand voice and knowledge management. Your brand DNA accessible and consistent across all generated content.</p>
+            </div>
+
+            <div class="tech-item">
+                <h4>⚡ Predictive Oracle</h4>
+                <p><strong>Llama 3 on Groq</strong></p>
+                <p style="color: #94a3b8; margin-top: 1rem;">Lightning-fast analysis and strategic recommendations. Processes inventory data and market signals in milliseconds for instant decision-making.</p>
+            </div>
